@@ -2,7 +2,7 @@
 # This class represents a single playing card. The card has a suit and a value.
 # The card is either a face card or a pip card.
 
-class Card < ActiveRecord::Base
+class Card
   SPADES   = :spades
   HEARTS   = :hearts
   DIAMONDS = :diamonds
@@ -17,9 +17,7 @@ class Card < ActiveRecord::Base
 
   attr_reader :suit, :value
 
-  after_initialize :init
-
-  def init
+  def initialize(params = {})
 
   end
 
@@ -30,7 +28,7 @@ class Card < ActiveRecord::Base
 
   # Is this a pip card?
   def pip_card?
-    
+
   end
 
 end

@@ -5,9 +5,7 @@
 
 class Deck < CardStack
 
-  after_initialize :init
-
-  def init
+  def initialize
 
   end
 

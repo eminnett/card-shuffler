@@ -1,18 +1,15 @@
 ##
 # This class represents a generic collection of cards.
 
-class CardStack < ActiveRecord::Base
+class CardStack
 
-  has_many :cards
-  after_initialize :init
-
-  def init
+  def initialize
     @stack = []
   end
 
   # Inserts the given card to the top of the stack.
   def push(card)
-    self.cards << card
+
   end
 
   # Returns the top most card from the stack and removes it from the stack.
