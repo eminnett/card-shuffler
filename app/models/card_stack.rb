@@ -28,12 +28,7 @@ class CardStack
   end
 
   # Splits the
-  def split_at(index)
-
-  end
-
-  # Pushes the contents of the given stacks in the order they are given and
-  def combine(stacks)
+  def split_at!(index)
 
   end
 
@@ -43,9 +38,9 @@ class CardStack
   end
 
   # Class method that pushes the contents of each of the given stacks onto the
-  # first stack in the list. The first stack is then returned with the full
-  # set of contents.
-  def self.combine(stacks)
+  # first stack in the list. The first stack is updated with the full set of
+  # contents and all the other stacks should be destroyed.
+  def self.combine!(stacks)
 
   end
 
