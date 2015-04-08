@@ -10,21 +10,21 @@ describe Card, type: :model do
   end
 
   it "should error when the value is not acceptable" do
-    expect(Card.new({:value => :cake})).to raise_error
+    expect { Card.new({:value => :cake}) }.to raise_error(RuntimeError)
   end
 
   it "should error when the suit is not acceptable" do
-    expect(Card.new({:suit  => :cake})).to raise_error
+    expect { Card.new({:suit  => :cake}) }.to raise_error(RuntimeError)
   end
 
   describe "#face_card?" do
 
-    it "is true when it a face card" do
+    it "is true when it is a face card" do
       card = Card.new({:value => Card::FACES.sample})
       expect(card.face_card?).to be true
     end
 
-    it "is false when it a pip card" do
+    it "is false when it is a pip card" do
       card = Card.new({:value => rand(1..10)})
       expect(card.face_card?).to be false
     end
@@ -33,14 +33,14 @@ describe Card, type: :model do
 
   describe "#pip_card?" do
 
-    it "is false when it a face card" do
+    it "is false when it is a face card" do
       card = Card.new({:value => Card::FACES.sample})
-      expect(card.face_card?).to be false
+      expect(card.pip_card?).to be false
     end
 
-    it "is true when it a pip card" do
+    it "is true when it is a pip card" do
       card = Card.new({:value => rand(1..10)})
-      expect(card.face_card?).to be true
+      expect(card.pip_card?).to be true
     end
 
   end
