@@ -3,5 +3,24 @@
 # The card is either a face card or a pip card.
 
 class Card < ActiveRecord::Base
+  SPADES   = :spades
+  HEARTS   = :hearts
+  DIAMONDS = :diamonds
+  CLUBS    = :clubs
+  SUITS    = [SPADES, HEARTS, DIAMONDS, CLUBS]
+
+  KING     = :king
+  QUEEN    = :queen
+  JACK     = :jack
+  FACES    = [JACK, QUEEN, KING]
+  VALUES   = (1..10).to_a + FACES
+
+  attr_reader :suit, :value
+
+  after_initialize :init
+
+  def init
+
+  end
 
 end
