@@ -23,4 +23,14 @@ class Card < ActiveRecord::Base
 
   end
 
+  # Is this a face card?
+  def face_card?
+
+  end
+
+  # Is this a pip card?
+  def pip_card?
+    
+  end
+
 end
