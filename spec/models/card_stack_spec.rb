@@ -48,23 +48,60 @@ describe CardStack, type: :model do
     end
   end
 
+  describe "#swap!" do
+    it "should do nothing when the indices are the same" do
+      cards = 2.times.map { Card.new }
+      stack = CardStack.new cards
+      initial_stack_as_string = stack.to_s
+
+      stack.swap! 0, 0
+
+      expect(stack.to_s).to eq(initial_stack_as_string)
+    end
+
+    it "should swap the cards at the given indices" do
+      cards = 2.times.map { Card.new }
+      stack = CardStack.new cards
+
+      stack.swap! 0, 1
+
+      expect(stack.to_s).to eq("#{cards[1].to_s}, #{cards[0].to_s}")
+    end
+
+    it "should maintain the count" do
+      cards         = 2.times.map { Card.new }
+      stack         = CardStack.new cards
+      initial_count = stack.count
+
+      stack.swap! 0, 1
+
+      expect(stack.count).to equal(initial_count)
+    end
+
+    it "should error when swapping an out of bounds index" do
+      cards = 2.times.map { Card.new }
+      stack = CardStack.new cards
+      expect { stack.swap! 0, 2 }.to raise_error(RuntimeError)
+    end
+  end
+
   describe "#split_at!" do
     it "should return a new CardStack" do
-      cards       = 2.times.map { Card.new }
-      stack       = CardStack.new cards
-      splitResult = stack.split_at! 1
+      cards        = 2.times.map { Card.new }
+      stack        = CardStack.new cards
+      split_result = stack.split_at! 1
 
-      expect(splitResult).to be_a(CardStack)
+      expect(split_result).to be_a(CardStack)
     end
 
     it "should update the CardStack" do
-      cards          = 2.times.map { Card.new }
-      stack          = CardStack.new cards
-      countAfterPush = stack.count
+      cards            = 2.times.map { Card.new }
+      stack            = CardStack.new cards
+      count_after_push = stack.count
 
       stack.split_at! 1
 
-      expect(stack.count).not_to equal(countAfterPush)
+      expect(stack.count).not_to equal(count_after_push)
     end
   end
 
@@ -74,41 +111,41 @@ describe CardStack, type: :model do
     end
 
     it "should increase by 1 after a push" do
-      card         = Card.new
-      stack        = CardStack.new
-      initialCount = stack.count
+      card          = Card.new
+      stack         = CardStack.new
+      initial_count = stack.count
       stack.push card
 
-      expect(stack.count - initialCount).to equal(1)
+      expect(stack.count - initial_count).to equal(1)
     end
 
     it "should decrease by 1 after a pop" do
-      card           = Card.new
-      stack          = CardStack.new
+      card             = Card.new
+      stack            = CardStack.new
       stack.push card
-      countAfterPush = stack.count
+      count_after_push = stack.count
       stack.pop
 
-      expect(stack.count - countAfterPush).to equal(-1)
+      expect(stack.count - count_after_push).to equal(-1)
     end
 
-    it "should increase by 1 after an insert" do
-      card         = Card.new
-      stack        = CardStack.new
-      initialCount = stack.count
+    it "should incr ease by 1 after an insert" do
+      card          = Card.new
+      stack         = CardStack.new
+      initial_count = stack.count
       stack.insert 0, card
 
-      expect(stack.count - initialCount).to equal(1)
+      expect(stack.count - initial_count).to equal(1)
     end
 
     it "should decrease by 1 after a pull_from" do
-      card           = Card.new
-      stack          = CardStack.new
+      card             = Card.new
+      stack            = CardStack.new
       stack.push card
-      countAfterPush = stack.count
+      count_after_push = stack.count
       stack.pull_from 0
 
-      expect(stack.count - countAfterPush).to equal(-1)
+      expect(stack.count - count_after_push).to equal(-1)
     end
   end
 
@@ -123,10 +160,10 @@ describe CardStack, type: :model do
 
   describe ".combine!" do
     it "should update the first CardStack" do
-      numStacks        = 2
-      numCardsPerStack = 2
-      stacks = numStacks.times.map {
-        cards = numCardsPerStack.times.map { Card.new }
+      num_stacks          = 2
+      num_cards_per_stack = 2
+      stacks = num_stacks.times.map {
+        cards = num_cards_per_stack.times.map { Card.new }
         CardStack.new cards
       }
 
@@ -137,10 +174,10 @@ describe CardStack, type: :model do
     end
 
     it "should leave all but the first stack with 0 count" do
-      numStacks        = 2
-      numCardsPerStack = 2
-      stacks = numStacks.times.map {
-        cards = numCardsPerStack.times.map { Card.new }
+      num_stacks          = 2
+      num_cards_per_stack = 2
+      stacks = num_stacks.times.map {
+        cards = num_cards_per_stack.times.map { Card.new }
         CardStack.new cards
       }
 

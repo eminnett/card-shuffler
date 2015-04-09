@@ -4,10 +4,11 @@
 class CardStack
 
   def initialize(cards = [])
+    @stack = []
     cards.each do |card|
       error_unless_param_is_a_card card, "include"
+      @stack.push card
     end
-    @stack = cards
   end
 
   # Inserts the given card to the top of the stack.
@@ -25,7 +26,7 @@ class CardStack
   # indicate a distance from the top rather than the bottom.
   def insert(index, card)
     error_unless_param_is_a_card card, "insert"
-    error_unless_index_is_in_bounds index
+    error_unless_index_is_in_bounds index unless index == count
 
     @stack.insert index, card
   end
@@ -37,6 +38,16 @@ class CardStack
     card = @stack[index]
     @stack.delete_at index
     card
+  end
+
+  # Swaps the cards at the two given indices.
+  def swap!(i, j)
+    return if i == j
+
+    error_unless_index_is_in_bounds i
+    error_unless_index_is_in_bounds j
+
+    @stack[i], @stack[j] = @stack[j], @stack[i]
   end
 
   # Splits the CardStack at the given index returning a new CardStack
@@ -93,7 +104,7 @@ class CardStack
     # index outside of the range of positive and negative value bounded by count - 1?
     def index_out_of_bounds?(index)
       return false if index == 0
-      count == 0 || !(-(count)..(count)).include?(index)
+      count == 0 || !(-(count - 1)..(count - 1)).include?(index)
     end
 
 end

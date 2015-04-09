@@ -3,39 +3,39 @@ require "rails_helper"
 describe "Deck" do
 
   it "should not contain any duplicate Cards" do
-    cardStrings = []
-    deck        = Deck.new
-    deckCount   = deck.count
+    card_strings = []
+    deck         = Deck.new
+    deck_count   = deck.count
 
-    deckCount.times do
-      cardStrings.push deck.pop.to_s
+    deck_count.times do
+      card_strings.push deck.pop.to_s
     end
 
-    expect(cardStrings.uniq.count).to equal(deckCount)
+    expect(card_strings.uniq.count).to equal(deck_count)
   end
 
   it "should represent all the suits" do
-    suitsInDeck = []
-    deck        = Deck.new
-    deckCount   = deck.count
+    suits_in_deck = []
+    deck          = Deck.new
+    deck_count    = deck.count
 
-    deckCount.times do
-      suitsInDeck.push deck.pop.suit
+    deck_count.times do
+      suits_in_deck.push deck.pop.suit
     end
 
-    expect(suitsInDeck.uniq.sort).to eq(Card::SUITS.uniq.sort)
+    expect(suits_in_deck.uniq.sort).to eq(Card::SUITS.uniq.sort)
   end
 
   it "should represent all the values" do
-    valuesInDeck = []
-    deck        = Deck.new
-    deckCount   = deck.count
+    values_in_deck = []
+    deck           = Deck.new
+    deck_count     = deck.count
 
-    deckCount.times do
-      valuesInDeck.push deck.pop.value
+    deck_count.times do
+      values_in_deck.push deck.pop.value
     end
 
-    sorted_values_in_deck = valuesInDeck.uniq.sort {|a,b| Card.value_sorter a, b}
+    sorted_values_in_deck = values_in_deck.uniq.sort {|a,b| Card.value_sorter a, b}
     sorted_suits          = Card::VALUES.sort {|a,b| Card.value_sorter a, b}
     expect(sorted_values_in_deck).to eq(sorted_suits)
   end
