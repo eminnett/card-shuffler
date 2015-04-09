@@ -8,6 +8,8 @@ class Deck < CardStack
   def initialize
     super
 
+    @basic_card_stack_class = CardStack
+
     suits  = Card::SUITS
     values = Card::VALUES
     suits.each do |suit|

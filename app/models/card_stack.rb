@@ -8,6 +8,7 @@ class CardStack
       raise "CardStacks can only include Cards" unless card.is_a? Card
     end
     @stack = cards
+    @basic_card_stack_class = self.class
   end
 
   # Inserts the given card to the top of the stack.
@@ -37,11 +38,14 @@ class CardStack
     card
   end
 
-  # Splits the
+  # Splits the CardStack at the given index returning a new CardStack
+  # comprised of the "top" and leaving the "bottom".
   def split_at!(index)
     remainder = @stack.from(index)
     @stack    = @stack[0...index]
-    self.class.new(remainder)
+
+    # This needs to be CardStack and nt any of its subclasses.
+    @basic_card_stack_class.new(remainder)
   end
 
   # The number of cards in the stack.
