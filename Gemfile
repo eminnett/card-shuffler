@@ -44,5 +44,8 @@ group :development, :test do
 
   # RSpec for BDD style unit testing
   gem 'rspec-rails', '~> 3.2.1'
+
+  # Coveralls for test coverage.
+  gem 'coveralls', require: false
 end
 
