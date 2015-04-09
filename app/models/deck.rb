@@ -8,8 +8,6 @@ class Deck < CardStack
   def initialize
     super
 
-    @basic_card_stack_class = CardStack
-
     suits  = Card::SUITS
     values = Card::VALUES
     suits.each do |suit|
@@ -17,6 +15,14 @@ class Deck < CardStack
         push Card.new({:suit => suit, :value => value})
       end
     end
+  end
+
+  def split_at!(index)
+    remainder = @stack.from(index)
+    @stack    = @stack[0...index]
+
+    # This needs to be a CardStack and not a Deck.
+    CardStack.new remainder
   end
 
 end

@@ -5,15 +5,14 @@ class CardStack
 
   def initialize(cards = [])
     cards.each do |card|
-      raise "CardStacks can only include Cards" unless card.is_a? Card
+      error_unless_param_is_a_card card, "include"
     end
     @stack = cards
-    @basic_card_stack_class = self.class
   end
 
   # Inserts the given card to the top of the stack.
   def push(card)
-    raise "CardStacks can only push Cards" unless card.is_a? Card
+    error_unless_param_is_a_card card, "push"
     @stack.push(card)
   end
 
@@ -25,14 +24,16 @@ class CardStack
   # Inserts the given card at a specific point within the stack. Negative indices
   # indicate a distance from the top rather than the bottom.
   def insert(index, card)
-    raise "CardStacks can only insert Cards" unless card.is_a? Card
-    raise "#{index} is an out of bounds index for this CardStack" if index_out_of_bounds? index
+    error_unless_param_is_a_card card, "insert"
+    error_unless_index_is_in_bounds index
+
     @stack.insert index, card
   end
 
   # Returns the Card at a specific point in the stack and removes it.
   def pull_from(index)
-    raise "#{index} is an out of bounds index for this CardStack" if index_out_of_bounds? index
+    error_unless_index_is_in_bounds index
+
     card = @stack[index]
     @stack.delete_at index
     card
@@ -44,8 +45,7 @@ class CardStack
     remainder = @stack.from(index)
     @stack    = @stack[0...index]
 
-    # This needs to be CardStack and nt any of its subclasses.
-    @basic_card_stack_class.new(remainder)
+    self.class.new remainder
   end
 
   # The number of cards in the stack.
@@ -81,11 +81,19 @@ class CardStack
 
   private
 
+    def error_unless_param_is_a_card(param, verb)
+      raise "CardStacks can only #{verb} Cards" unless param.is_a? Card
+    end
+
+    def error_unless_index_is_in_bounds(i)
+      raise "#{i} is an out of bounds index for this CardStack" if index_out_of_bounds? i
+    end
+
     # Is the supplied index either non-zero and the stack is empty or is the
     # index outside of the range of positive and negative value bounded by count - 1?
     def index_out_of_bounds?(index)
       return false if index == 0
-      count == 0 || !(-(count-1)..(count-1)).include?(index)
+      count == 0 || !(-(count)..(count)).include?(index)
     end
 
 end
