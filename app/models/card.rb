@@ -3,17 +3,18 @@
 # The card is either a face card or a pip card.
 
 class Card
-  SPADES   = :spades
-  HEARTS   = :hearts
-  DIAMONDS = :diamonds
-  CLUBS    = :clubs
-  SUITS    = [SPADES, HEARTS, DIAMONDS, CLUBS]
+  SPADES      = :spades
+  HEARTS      = :hearts
+  DIAMONDS    = :diamonds
+  CLUBS       = :clubs
+  SUITS       = [SPADES, HEARTS, DIAMONDS, CLUBS]
 
-  KING     = :king
-  QUEEN    = :queen
-  JACK     = :jack
-  FACES    = [JACK, QUEEN, KING]
-  VALUES   = (1..10).to_a + FACES
+  KING        = :king
+  QUEEN       = :queen
+  JACK        = :jack
+  FACES       = [JACK, QUEEN, KING]
+  FACE_VALUES = {JACK => 11, QUEEN => 12, KING => 13}
+  VALUES      = (1..10).to_a + FACES
 
   attr_reader :suit, :value
 
@@ -39,6 +40,13 @@ class Card
   def to_s
     value = @value == 1 ? "ace" : @value
     "the #{value} of #{suit}"
+  end
+
+  # Sorter to organise possible values given a comparison of both integers and symbols
+  def self.value_sorter(x, y)
+    x = FACES.include?(x) ? FACE_VALUES[x] : x
+    y = FACES.include?(y) ? FACE_VALUES[y] : y
+    x <=> y
   end
 
 end

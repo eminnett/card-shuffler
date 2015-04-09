@@ -58,4 +58,14 @@ describe Card, type: :model do
     end
 
   end
+
+  describe ".value_sorter" do
+
+    it "should return shuffled VALUES back to their original order" do
+      shuffled_values = Card::VALUES.shuffle
+      sorted_values   = shuffled_values.sort {|a,b| Card.value_sorter a, b}
+      expect(sorted_values).to eq(Card::VALUES)
+    end
+
+  end
 end
