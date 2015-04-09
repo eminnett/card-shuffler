@@ -112,6 +112,15 @@ describe CardStack, type: :model do
     end
   end
 
+  describe "#to_s" do
+    it "should return a comma seperated string of all the card strings" do
+      cards = 2.times.map { Card.new }
+      stack = CardStack.new cards
+
+      expect(stack.to_s).to eq("#{cards[0].to_s}, #{cards[1].to_s}")
+    end
+  end
+
   describe ".combine!" do
     it "should update the first CardStack" do
       numStacks        = 2

@@ -49,6 +49,16 @@ class CardStack
     @stack.count
   end
 
+  # Returns a string representation of the CardStack.
+  def to_s
+    s = ""
+    @stack.each do |card|
+      s += ", " if s.length > 0
+      s += card.to_s
+    end
+    s
+  end
+
   # Class method that pushes the contents of each of the given stacks onto the
   # first stack in the list. The first stack is updated with the full set of
   # contents.
