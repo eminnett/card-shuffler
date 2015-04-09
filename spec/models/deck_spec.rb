@@ -23,7 +23,7 @@ describe "Deck" do
       suitsInDeck.push deck.pop.suit
     end
 
-    expect(suitsInDeck.uniq.sort).to equal(CARD::SUITS.uniq.sort)
+    expect(suitsInDeck.uniq.sort).to eq(Card::SUITS.uniq.sort)
   end
 
   it "should represent all the values" do
@@ -35,7 +35,9 @@ describe "Deck" do
       valuesInDeck.push deck.pop.value
     end
 
-    expect(valuesInDeck.uniq.sort).to equal(CARD::VALUES.uniq.sort)
+    sorted_values_in_deck = valuesInDeck.uniq.sort {|a,b| Card.value_sorter a, b}
+    sorted_suits          = Card::VALUES.sort {|a,b| Card.value_sorter a, b}
+    expect(sorted_values_in_deck).to eq(sorted_suits)
   end
 
   describe "#count" do

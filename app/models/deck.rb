@@ -6,7 +6,15 @@
 class Deck < CardStack
 
   def initialize
+    super
 
+    suits  = Card::SUITS
+    values = Card::VALUES
+    suits.each do |suit|
+      values.each do |value|
+        push Card.new({:suit => suit, :value => value})
+      end
+    end
   end
 
 end
