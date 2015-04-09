@@ -6,33 +6,40 @@
 class Shuffler
 
   def self.shuffle(stack)
-    self.fisher_yates_shuffle(stack)
+    self.fisher_yates_shuffle stack
   end
 
-  def self.cut(stack)
-
-  end
-
-  def self.overhand_shuffle(stack)
+  #
+  def self.cut(stack, cut_index = nil)
 
   end
 
+  #
+  def self.overhand_shuffle(stack, repeat_num = 1, cuts_num = 1)
+
+  end
+
+  #
   def self.rifle_shuffle(stack)
 
   end
 
-  def self.pile_shuffle(stack)
+  #
+  def self.pile_shuffle(stack, piles_num = 2)
 
   end
 
+  #
   def self.mongean_shuffle(stack)
 
   end
 
+  #
   def self.mexican_spiral_shuffle(stack)
 
   end
 
+  #
   def self.fisher_yates_shuffle(stack)
 
   end
