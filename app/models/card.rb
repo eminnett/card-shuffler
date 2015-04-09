@@ -35,4 +35,10 @@ class Card
     !face_card?
   end
 
+  # Returns a string representation of the card.
+  def to_s
+    value = @value == 1 ? "ace" : @value
+    "the #{value} of #{suit}"
+  end
+
 end

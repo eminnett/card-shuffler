@@ -44,4 +44,18 @@ describe Card, type: :model do
     end
 
   end
+
+  describe "#to_s?" do
+
+    it "should match 'the {value} of {suit}'" do
+      card = Card.new({:value => Card::VALUES.select { |v|  v != 1  }.sample})
+      expect(card.to_s).to eq("the #{card.value} of #{card.suit}")
+    end
+
+    it "should handle aces as an exception" do
+      card = Card.new({:value => 1})
+      expect(card.to_s).to eq("the ace of #{card.suit}")
+    end
+
+  end
 end
