@@ -9,6 +9,10 @@ describe Card, type: :model do
     expect(Card::SUITS).to include(Card.new.suit)
   end
 
+  it "should treat a value greater than 10 as a face card" do
+    expect(Card.new({:value => 12}).value).to equal(Card::QUEEN)
+  end
+
   it "should error when the value is not acceptable" do
     expect { Card.new({:value => :cake}) }.to raise_error(RuntimeError)
   end
@@ -57,6 +61,33 @@ describe Card, type: :model do
       expect(card.to_s).to eq("the ace of #{card.suit}")
     end
 
+  end
+
+  describe "#to_short_s?" do
+
+    it "should match '{v}:{s}'" do
+      card = Card.new({:value => 1, :suit => Card::SPADES})
+      expect(card.to_short_s).to eq("1:S")
+    end
+
+  end
+
+  describe ".convert_short_string_to_hash" do
+    it "should convert a string that matches '{v}:{s}' to the requisite hash" do
+      card_hash    = {:value => 1, :suit => Card::SPADES}
+      card         = Card.new(card_hash)
+      short_string = card.to_short_s
+      expect(Card.convert_short_string_to_hash(short_string)).to eq(card_hash)
+    end
+
+    it "should handle numeric values greater than 10" do
+      card_hash    = {:value => 12, :suit => Card::DIAMONDS}
+      card         = Card.new(card_hash)
+      short_string = card.to_short_s
+
+      card_hash[:value] = Card::QUEEN
+      expect(Card.convert_short_string_to_hash(short_string)).to eq(card_hash)
+    end
   end
 
   describe ".value_sorter" do
