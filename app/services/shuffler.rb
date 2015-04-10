@@ -24,7 +24,7 @@ class Shuffler
 
   # Simulates the overhand shuffle technique with a given number of repetitions
   # each with a given number of cuts.
-  def self.overhand_shuffle(stack, cuts_num = 1, repeat_num = 1)
+  def self.overhand_shuffle(stack, cuts_num = 5, repeat_num = 1)
     result_stack = stack
 
     if stack.count > 0
@@ -98,12 +98,13 @@ class Shuffler
   # Simulates the pile shuffle technique with a given number of piles.
   # This technique effectively "deals" the cards into a number of piles
   # and then combines the piles back into a single CardStack.
-  def self.pile_shuffle(stack, piles_num = 2)
+  def self.pile_shuffle(stack, piles_num = 5)
 
     dealt_stacks = piles_num.times.map {CardStack.new}
     while stack.count > 0 do
       (0...piles_num).each do |i|
         dealt_stacks[i].push stack.pop
+        break if stack.count == 0
       end
     end
 
