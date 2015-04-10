@@ -186,5 +186,19 @@ describe CardStack, type: :model do
       CardStack.combine! stacks
       expect(second_stack.count).to equal(0)
     end
+
+    it "should combine more than two stacks" do
+      num_stacks          = 5
+      num_cards_per_stack = 2
+      stacks = num_stacks.times.map {
+        cards = num_cards_per_stack.times.map { Card.new }
+        CardStack.new cards
+      }
+
+      first_stack = stacks[0]
+      CardStack.combine! stacks
+
+      expect(first_stack.count).to equal(num_stacks * num_cards_per_stack)
+    end
   end
 end

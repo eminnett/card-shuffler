@@ -79,11 +79,10 @@ class CardStack
   # contents.
   def self.combine!(stacks)
     first_stack  = stacks.shift
+    second_stack = stacks[0]
 
     # If we have more than one stack left, we want to combine what is left.
     self.combine! stacks unless stacks.count == 1
-
-    second_stack = stacks.shift
 
     while second_stack.count > 0
       first_stack.push second_stack.pull_from 0
