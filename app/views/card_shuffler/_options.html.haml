@@ -1,0 +1,88 @@
+.options
+  %h2
+    - if flash.count > 0
+      - flash.each do |name, msg|
+        %span{:class => name}
+          = msg
+    - else
+      = @option_title
+
+  - if @shuffled
+    .row
+      %a.button{:href => "/"}
+        New Deck
+
+  .row
+    .button.shuffle-button{:"data-shuffle" => "cut"}
+      Cut
+    .description
+      The Cut simply splits the deck into two stacks at a random
+      point within the deck and combine the stacks swapping the
+      top and the bottom.
+
+  .row
+    .button.shuffle-button{:"data-shuffle" => "overhand-shuffle"}
+      Overhand
+    .description
+      The Overhand shuffle is only marginally more complex than
+      cutting a deck. In fact, the overhand shuffle amounts to
+      a series of cuts that alternate between placing the cut
+      stack above and below the new stack. In this simulation,
+      the overhand shuffle defaults to 5 cuts.
+
+  .row
+    .button.shuffle-button{:"data-shuffle" => "rifle-shuffle"}
+      Perfect Rifle
+    .description
+      The Rifle shuffle consists of splitting teh deck into two
+      equally sized stacks and then interleaving the cards from
+      each stack. The perfect rifle shuffle interleaves cards
+      perfectly one after the other and as a result doesn't
+      introduce much randomisation.
+
+  .row
+    .button.shuffle-button{:"data-shuffle" => "pile-shuffle"}
+      Pile Shuffle
+    .description
+      The Pile shuffle amounts to dealing the cards from the
+      deck into a series of piles and then combining them back
+      into a single stack. In this simulation, the pile shuffle
+      defaults to 5 piles and we assume that the piles are dealt
+      from left to right and then recombined from right to left
+      with the right most pile on top of the left.
+
+  .row
+    .button.shuffle-button{:"data-shuffle" => "mongean-shuffle"}
+      Mongean Shuffle
+    .description
+      The Mongean shuffle is in effect a special type of
+      overhand shuffle where every cut is the top card of
+      the deck. This results in the shuffle starting with
+      the top most card and then taking the next top most
+      card and alternating the placement above and then
+      below the new stack of cards.
+
+  .row
+    .button.shuffle-button{:"data-shuffle" => "mexican-spiral-shuffle"}
+      Mexican Spiral
+    .description
+      The Mexican Spiral shuffle is similar to the Pile shuffle
+      but with a twist. The top most card is dealt to start a
+      single pile and then the next top most card is placed at
+      the bottom of the deck. This process is repeated until
+      all the cards have been dealt onto the pile.
+
+  .row
+    .button.shuffle-button{:"data-shuffle" => "fisher-yates-shuffle"}
+      Fisher-Yates
+    .description
+      The Fisher-Yates shuffle is unlike the other shuffling
+      techniques that make up this simple application all of
+      which simulate real methods of shuffling a deck of cards.
+      The Fisher-Yates algorithm is defined as generating a
+      random permutation of a finite set, or more plainly,
+      an algorithm for shuffling a deck of cards. This algorithm
+      is unbiased so that each permutation is equally likely.
+      The implementation of such an algorithm is simply as
+      random as the random number generator being used.
+

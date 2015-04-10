@@ -1,8 +1,9 @@
 = render :partial => "heading"
-= render :partial => "form"
+= render :partial => "options"
 
-%ul
-  - @stack.count.times do
-    %li
+%main
+  %ul
+    - @stack.count.times do
       - card = @stack.pop
-      = card.to_s
+      %li.card{:"data-card" => card.to_short_s}
+        = card.to_s
