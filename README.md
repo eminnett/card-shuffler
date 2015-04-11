@@ -7,7 +7,6 @@ Simple Rails app that demonstrates a handful of simulated approaches to shufflin
 
 ###TODO
 * Finish Writing this Readme...
-* Lower complexity of the Overhand Shuffle method.
 * Style the view.
 * Deploy to Heroku.
 * DRY up some of the test.
