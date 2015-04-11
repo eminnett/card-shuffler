@@ -77,6 +77,7 @@ describe Card, type: :model do
       card_hash    = {:value => 1, :suit => Card::SPADES}
       card         = Card.new(card_hash)
       short_string = card.to_short_s
+
       expect(Card.convert_short_string_to_hash(short_string)).to eq(card_hash)
     end
 
@@ -86,6 +87,7 @@ describe Card, type: :model do
       short_string = card.to_short_s
 
       card_hash[:value] = Card::QUEEN
+
       expect(Card.convert_short_string_to_hash(short_string)).to eq(card_hash)
     end
   end

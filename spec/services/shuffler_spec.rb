@@ -7,6 +7,19 @@ describe Shuffler, type: :service do
     @initial_stack_string = @deck.to_s
   end
 
+  def six_card_test(expected_order, method, extra_params = [])
+    cards = 6.times.map { Card.new }
+    stack = CardStack.new cards
+    stack = Shuffler.send(method, stack, *extra_params)[:shuffled_stack]
+
+    expected_string = "#{cards[expected_order.shift].to_s}"
+    expected_order.each do |index|
+      expected_string += ", #{cards[index].to_s}"
+    end
+
+    return stack, expected_string
+  end
+
   shared_examples_for "a shuffled stack" do
     it "should return a results hash" do
       expect(@result).to be_a(Hash)
@@ -50,12 +63,6 @@ describe Shuffler, type: :service do
 
     it "should return a results hash with a cut_index key" do
       expect(@result).to have_key(:cut_index)
-    end
-
-    it "should result in an empty CardStack when the input CardStack is empty" do
-      empty_stack  = CardStack.new
-      empty_result = Shuffler.cut empty_stack
-      expect(empty_result[:shuffled_stack].count).to equal(0)
     end
   end
 
@@ -116,15 +123,8 @@ describe Shuffler, type: :service do
     end
 
     it "should return results ordered in the form of a Rifle shuffle" do
-      cards = 6.times.map { Card.new }
-      stack = CardStack.new cards
-      stack = Shuffler.rifle_shuffle(stack)[:shuffled_stack]
-
-      expected_order  = [3, 0, 4, 1, 5, 2]
-      expected_string = "#{cards[expected_order.shift].to_s}"
-      expected_order.each do |index|
-        expected_string += ", #{cards[index].to_s}"
-      end
+      expected_order = [3, 0, 4, 1, 5, 2]
+      stack, expected_string = six_card_test expected_order, :rifle_shuffle
 
       expect(stack.to_s).to eq(expected_string)
     end
@@ -143,15 +143,9 @@ describe Shuffler, type: :service do
     end
 
     it "should return results ordered by the dealt piles" do
-      cards = 6.times.map { Card.new }
-      stack = CardStack.new cards
-      stack = Shuffler.pile_shuffle(stack, 2)[:shuffled_stack]
-
-      expected_order  = [5, 3, 1, 4, 2, 0]
-      expected_string = "#{cards[expected_order.shift].to_s}"
-      expected_order.each do |index|
-        expected_string += ", #{cards[index].to_s}"
-      end
+      expected_order = [5, 3, 1, 4, 2, 0]
+      num_piles      = 2
+      stack, expected_string = six_card_test expected_order, :pile_shuffle, [num_piles]
 
       expect(stack.to_s).to eq(expected_string)
     end
@@ -166,15 +160,8 @@ describe Shuffler, type: :service do
     it_behaves_like "a shuffled stack"
 
     it "should return results ordered in the form of a Mongean shuffle" do
-      cards = 6.times.map { Card.new }
-      stack = CardStack.new cards
-      stack = Shuffler.mongean_shuffle(stack)[:shuffled_stack]
-
-      expected_order  = [1, 3, 5, 4, 2, 0]
-      expected_string = "#{cards[expected_order.shift].to_s}"
-      expected_order.each do |index|
-        expected_string += ", #{cards[index].to_s}"
-      end
+      expected_order = [1, 3, 5, 4, 2, 0]
+      stack, expected_string = six_card_test expected_order, :mongean_shuffle
 
       expect(stack.to_s).to eq(expected_string)
     end
@@ -189,15 +176,8 @@ describe Shuffler, type: :service do
     it_behaves_like "a shuffled stack"
 
     it "should return results ordered in the form of a 'mexican spiral'" do
-      cards = 6.times.map { Card.new }
-      stack = CardStack.new cards
-      stack = Shuffler.mexican_spiral_shuffle(stack)[:shuffled_stack]
-
-      expected_order  = [5, 3, 1, 4, 0, 2]
-      expected_string = "#{cards[expected_order.shift].to_s}"
-      expected_order.each do |index|
-        expected_string += ", #{cards[index].to_s}"
-      end
+      expected_order = [5, 3, 1, 4, 0, 2]
+      stack, expected_string = six_card_test expected_order, :mexican_spiral_shuffle
 
       expect(stack.to_s).to eq(expected_string)
     end

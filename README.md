@@ -9,4 +9,3 @@ Simple Rails app that demonstrates a handful of simulated approaches to shufflin
 * Finish Writing this Readme...
 * Style the view.
 * Deploy to Heroku.
-* DRY up some of the test.
