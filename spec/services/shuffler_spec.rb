@@ -74,6 +74,33 @@ describe Shuffler, type: :service do
     it "should return a results hash with a cuts_num key" do
       expect(@result).to have_key(:cuts_num)
     end
+
+    it "should raise an error when there are as many cuts as cards" do
+      deck = Deck.new
+      expect { Shuffler.overhand_shuffle deck, deck.count }.to raise_error(RuntimeError)
+    end
+
+    it "should raise an error when there are more cuts than cards" do
+      deck = Deck.new
+      expect { Shuffler.overhand_shuffle deck, (deck.count + 1) }.to raise_error(RuntimeError)
+    end
+
+    it "should operate with a single cut" do
+      deck        = Deck.new
+      deck_string = deck.to_s
+      result      = Shuffler.overhand_shuffle deck, 1
+
+      expect(result[:shuffled_stack].to_s).not_to eq(deck_string)
+    end
+
+    it "should result in the Mongean shuffle when the number of cuts is one less than the number of cards" do
+      deck            = Deck.new
+      overhand_string = Shuffler.overhand_shuffle(deck, deck.count - 1)[:shuffled_stack].to_s
+      deck            = Deck.new
+      mongean_string  = Shuffler.mongean_shuffle(deck)[:shuffled_stack].to_s
+
+      expect(overhand_string).to eq(mongean_string)
+    end
   end
 
   describe ".rifle_shuffle" do
