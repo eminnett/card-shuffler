@@ -25,47 +25,31 @@ class Shuffler
   # Simulates the overhand shuffle technique with a given number of repetitions
   # each with a given number of cuts.
   def self.overhand_shuffle(stack, cuts_num = 5, repeat_num = 1)
+    if stack.count > 0 && cuts_num >= stack.count
+      raise "Overhand shuffle must use fewer cuts than cards unless there are no cards to shuffle."
+    end
+
     result_stack = stack
 
     if stack.count > 0
       repeat_num.times do
         starting_stack = result_stack
 
-        if cuts_num == starting_stack.count - 1
-          result_stack      = CardStack.new [starting_stack.pop]
+        # Setup the initial stack for the shuffle.
+        result_stack   = self.overhand_first_cut starting_stack, cuts_num
+
+        cuts_num -= 1
+
+        if cuts_num == 0
+          # If the first cut is the only cut, simply combine the result with the starting_stack.
+          CardStack.combine! [result_stack, starting_stack]
         else
-          split_index_range = (cuts_num..starting_stack.count-1)
-          result_stack      = starting_stack.split_at! rand(split_index_range)
-        end
-
-
-        if cuts_num > 1
           # Alternate between combining each cut at the top and the bottom
-
-          num_iterations = cuts_num - 1
-          num_iterations.times do |index|
-
-            if index == num_iterations - 1
-              # In this case, this is the last cut so simply add the remainder of starting_stack.
-              stack_to_add = starting_stack
-            elsif num_iterations - 1 - index == starting_stack.count - 1
-              # In this case, we must add a stack containing only the top card in starting_stack.
-              stack_to_add = CardStack.new [starting_stack.pop]
-            else
-              # Behave as normal by splutting randomly within the vaialble range.
-              split_index_range = ((num_iterations - 1 - index)..(starting_stack.count - 1))
-              stack_to_add = starting_stack.split_at!(rand(split_index_range))
-            end
-
-            stacks_to_combine = [result_stack, stack_to_add]
-            stacks_to_combine.reverse if index.odd?
-
-            result_stack = stacks_to_combine.first
-
-            CardStack.combine! stacks_to_combine
+          (0..cuts_num).to_a.each do |index|
+            remaining_cuts     = cuts_num - index
+            combine_from_below = index.odd?
+            result_stack = self.overhand_subsequent_cut result_stack, starting_stack, remaining_cuts, combine_from_below
           end
-        else
-          CardStack.combine! [result_stack, stack]
         end
       end
     end
@@ -170,6 +154,46 @@ class Shuffler
     end
 
     {:shuffled_stack => stack}
+  end
+
+  private
+
+  # Returns the result of the first cut for the overhand shuffle.
+  def self.overhand_first_cut stack, cuts_num
+    possible_cuts = stack.count - 1
+    if cuts_num == possible_cuts
+      CardStack.new [stack.pop]
+    else
+      stack.split_at! rand((cuts_num..possible_cuts))
+    end
+  end
+
+  # Handles a single cut for the overhand shuffle and returns the combination
+  # of this cut and the stack the cut is added to.
+  def self.overhand_subsequent_cut shuffle_to_stack, shuffle_from_stack, remaining_cuts, combine_from_below
+
+    possible_cuts = shuffle_from_stack.count - 1
+
+    if remaining_cuts == 0
+      # In this case, this is the last cut so simply add the remainder of starting_stack.
+      stack_to_add      = shuffle_from_stack
+    elsif remaining_cuts == possible_cuts
+      # In this case, we must add a stack containing only the top card in starting_stack.
+      stack_to_add      = CardStack.new [shuffle_from_stack.pop]
+    else
+      # Behave as normal by splitting randomly within the viable range.
+      split_index_range = (remaining_cuts..possible_cuts)
+      stack_to_add      = shuffle_from_stack.split_at!(rand(split_index_range))
+    end
+
+    stacks_to_combine = [shuffle_to_stack, stack_to_add]
+    stacks_to_combine.reverse! if combine_from_below
+
+    result_stack      = stacks_to_combine.first
+
+    CardStack.combine! stacks_to_combine
+
+    result_stack
   end
 
 end
